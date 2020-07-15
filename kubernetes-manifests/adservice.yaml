@@ -16,6 +16,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: adservice
+  labels:
+    instrument: appd-auto
+    appdAppName: gcp-demo
 spec:
   selector:
     matchLabels:
