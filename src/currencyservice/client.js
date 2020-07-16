@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  */
-require('@google-cloud/trace-agent').start();
+// require('@google-cloud/trace-agent').start();
 
 const path = require('path');
 const grpc = require('grpc');
