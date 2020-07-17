@@ -17,12 +17,14 @@
 var appd = require('appdynamics');
 appd.profile({
   controllerHostName: "192.168.2.100",
-  controllerPort: 8090,
+  controllerPort: "8090",
+  controllerSslEnabled: false,
   accountName: "customer1" , //Required for a controller running in multi-tenant mode.
-  accountAccessKey: "cdcbda3-ac89-4115-bf4d-25f4f3ecf4b2", //Required for a controller running in multi-tenant mode.
+  accountAccessKey: "dcdcbda3-ac89-4115-bf4d-25f4f3ecf4b2", //Required for a controller running in multi-tenant mode.
   applicationName: "gcp-demo",
   tierName: "currencyservice",
-  nodeName:"currencyservice", //Prefix to the full node name.
+  nodeName:"currencyservice-1", //Prefix to the full node name.
+  libagent: true,
   debug: true //Debug is optional; defaults to false.
  });
 
