@@ -19,6 +19,20 @@ const protoLoader = require('@grpc/proto-loader');
 
 const charge = require('./charge');
 
+var appd = require('appdynamics');
+appd.profile({
+  controllerHostName: "192.168.2.100",
+  controllerPort: "8090",
+  controllerSslEnabled: false,
+  accountName: "customer1" , //Required for a controller running in multi-tenant mode.
+  accountAccessKey: "dcdcbda3-ac89-4115-bf4d-25f4f3ecf4b2", //Required for a controller running in multi-tenant mode.
+  applicationName: "gcp-demo",
+  tierName: "paymentservice",
+  nodeName:"paymentservice-1", //Prefix to the full node name.
+  libagent: true,
+  debug: true //Debug is optional; defaults to false.
+ });
+
 const logger = pino({
   name: 'paymentservice-server',
   messageKey: 'message',
@@ -45,11 +59,17 @@ class HipsterShopServer {
    * @param {*} callback  fn(err, ChargeResponse)
    */
   static ChargeServiceHandler (call, callback) {
+    var tx = appd.startTransaction("PaymentService.Charge");
     try {
       logger.info(`PaymentService#Charge invoked with request ${JSON.stringify(call.request)}`);
       const response = charge(call.request);
+
+      tx.end();
       callback(null, response);
     } catch (err) {
+      tx.markError(err.message, 500)
+      tx.end();
+
       console.warn(err);
       callback(err);
     }
