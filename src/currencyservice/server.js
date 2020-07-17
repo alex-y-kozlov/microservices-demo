@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-require("appdynamics").profile({
+var appd = require('appdynamics');
+appd.profile({
   controllerHostName: "192.168.2.100",
   controllerPort: 8090,
   accountName: "customer1" , //Required for a controller running in multi-tenant mode.
@@ -121,9 +122,12 @@ function _carry (amount) {
  * Lists the supported currencies
  */
 function getSupportedCurrencies (call, callback) {
-  logger.info('Getting supported currencies...');
+  var tx = appd.startTransaction("CurrencyService.convert");
+  logger.info('Getting supported currencies: tx=CurrencyService.getSupportedCurrencies');
   _getCurrencyData((data) => {
     callback(null, {currency_codes: Object.keys(data)});
+    tx.end()
+    logger.info(`Getting supported currencies completed: tx=CurrencyService.getSupportedCurrencies`);
   });
 }
 
@@ -131,7 +135,8 @@ function getSupportedCurrencies (call, callback) {
  * Converts between currencies
  */
 function convert (call, callback) {
-  logger.info('received conversion request');
+  var tx = appd.startTransaction("CurrencyService.convert");
+  logger.info('received conversion request: tx=CurrencyService.convert');
   try {
     _getCurrencyData((data) => {
       const request = call.request;
@@ -155,11 +160,16 @@ function convert (call, callback) {
       result.nanos = Math.floor(result.nanos);
       result.currency_code = request.to_code;
 
-      logger.info(`conversion request successful`);
+      tx.end()
+      logger.info(`conversion request successful: tx=CurrencyService.convert`);
+
       callback(null, result);
     });
   } catch (err) {
-    logger.error(`conversion request failed: ${err}`);
+    tx.markError(err.message, 500)
+    tx.end();
+
+    logger.error(`conversion request failed: ${err}: tx=CurrencyService.convert`);
     callback(err.message);
   }
 }
