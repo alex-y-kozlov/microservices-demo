@@ -14,6 +14,17 @@
  * limitations under the License.
  */
 
+require("appdynamics").profile({
+  controllerHostName: "192.168.2.100",
+  controllerPort: 8090,
+  accountName: "customer1" , //Required for a controller running in multi-tenant mode.
+  accountAccessKey: "cdcbda3-ac89-4115-bf4d-25f4f3ecf4b2", //Required for a controller running in multi-tenant mode.
+  applicationName: "gcp-demo",
+  tierName: "currencyservice",
+  nodeName:"currencyservice", //Prefix to the full node name.
+  debug: true //Debug is optional; defaults to false.
+ });
+
 if(process.env.DISABLE_PROFILER) {
   console.log("Profiler disabled.")
 }
