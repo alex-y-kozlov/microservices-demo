@@ -19,12 +19,12 @@ if(process.env.DISABLE_PROFILER) {
 }
 else {
   console.log("Profiler enabled.")
-  require('@google-cloud/profiler').start({
-    serviceContext: {
-      service: 'currencyservice',
-      version: '1.0.0'
-    }
-  });
+//  require('@google-cloud/profiler').start({
+//    serviceContext: {
+//      service: 'currencyservice',
+//      version: '1.0.0'
+//    }
+//  });
 }
 
 
@@ -33,7 +33,7 @@ if(process.env.DISABLE_TRACING) {
 }
 else {
   console.log("Tracing enabled.")
-  require('@google-cloud/trace-agent').start();
+//  require('@google-cloud/trace-agent').start();
 }
 
 if(process.env.DISABLE_DEBUGGER) {
@@ -41,12 +41,12 @@ if(process.env.DISABLE_DEBUGGER) {
 }
 else {
   console.log("Debugger enabled.")
-  require('@google-cloud/debug-agent').start({
-    serviceContext: {
-      service: 'currencyservice',
-      version: 'VERSION'
-    }
-  });
+//  require('@google-cloud/debug-agent').start({
+//    serviceContext: {
+//      service: 'currencyservice',
+//      version: 'VERSION'
+//    }
+//  });
 }
 
 const path = require('path');
