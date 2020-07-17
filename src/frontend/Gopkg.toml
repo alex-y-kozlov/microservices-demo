@@ -29,9 +29,9 @@
   name = "cloud.google.com/go"
   version = "0.40.0"
 
-[[constraint]]
-  name = "contrib.go.opencensus.io/exporter/stackdriver"
-  version = "0.5.0"
+# [[constraint]]
+#   name = "contrib.go.opencensus.io/exporter/stackdriver"
+#   version = "0.5.0"
 
 [[constraint]]
   name = "github.com/golang/protobuf"
@@ -53,9 +53,9 @@
   name = "github.com/sirupsen/logrus"
   version = "1.0.6"
 
-[[constraint]]
-  name = "go.opencensus.io"
-  version = "0.16.0"
+# [[constraint]]
+#   name = "go.opencensus.io"
+#   version = "0.16.0"
 
 [[constraint]]
   branch = "master"
@@ -65,6 +65,6 @@
   go-tests = true
   unused-packages = true
 
-[[constraint]]
-  name = "contrib.go.opencensus.io/exporter/jaeger"
-  version = "0.2.0"
+# [[constraint]]
+#   name = "contrib.go.opencensus.io/exporter/jaeger"
+#   version = "0.2.0"
