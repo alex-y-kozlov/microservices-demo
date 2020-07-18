@@ -27,6 +27,8 @@ spec:
     metadata:
       labels:
         app: adservice
+        instrument: appd-auto
+        appdAppName: gcp-demo
     spec:
       terminationGracePeriodSeconds: 5
       containers:

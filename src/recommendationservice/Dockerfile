@@ -23,3 +23,4 @@ ENV PORT "8080"
 EXPOSE 8080
 
 ENTRYPOINT ["python", "/recommendationservice/recommendation_server.py"]
+#ENTRYPOINT ["pyagent","run","-c","/recommendationservice/pyagent.cfg","/recommendationservice/recommendation_server.py" ]

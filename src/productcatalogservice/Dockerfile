@@ -23,4 +23,3 @@ COPY --from=builder /productcatalogservice ./server
 COPY products.json .
 EXPOSE 3550
 ENTRYPOINT ["/productcatalogservice/server"]
-

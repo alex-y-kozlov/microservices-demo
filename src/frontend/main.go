@@ -13,7 +13,7 @@
 // limitations under the License.
 
 package main
-
+// import appd "appdynamics"
 import (
 	"context"
 	"fmt"
@@ -81,6 +81,18 @@ type frontendServer struct {
 }
 
 func main() {
+//	cfg := appd.Config{}
+//	cfg.AppName = "gcp-demo"
+//	cfg.TierName = "frontend"
+//	cfg.NodeName = "frontend-1"
+//	cfg.Controller.Host = "192.168.2.100"
+//	cfg.Controller.Port = 8090
+//	cfg.Controller.UseSSL =  false
+//	cfg.Controller.Account = "customer1"
+//	cfg.Controller.AccessKey = "dcdcbda3-ac89-4115-bf4d-25f4f3ecf4b2"
+//	cfg.InitTimeoutMs = 5000
+//	appd.InitSDK(&cfg)
+
 	ctx := context.Background()
 	log := logrus.New()
 	log.Level = logrus.DebugLevel
@@ -155,13 +167,13 @@ func main() {
 }
 
 // func initJaegerTracing(log logrus.FieldLogger) {
-// 
+//
 // 	svcAddr := os.Getenv("JAEGER_SERVICE_ADDR")
 // 	if svcAddr == "" {
 // 		log.Info("jaeger initialization disabled.")
 // 		return
 // 	}
-// 
+//
 // 	// Register the Jaeger exporter to be able to retrieve
 // 	// the collected spans.
 // 	exporter, err := jaeger.NewExporter(jaeger.Options{
@@ -206,7 +218,7 @@ func main() {
 // 		} else {
 // 			trace.RegisterExporter(exporter)
 // 			log.Info("registered Stackdriver tracing")
-// 
+//
 // 			// Register the views to collect server stats.
 // 			initStats(log, exporter)
 // 			return
@@ -224,10 +236,10 @@ func main() {
 // 	// In a production environment or high QPS setup please use
 // 	// trace.ProbabilitySampler set at the desired probability.
 // 	trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
-// 
+//
 // 	initJaegerTracing(log)
 // 	initStackdriverTracing(log)
-// 
+//
 // }
 
 // func initProfiling(log logrus.FieldLogger, service, version string) {

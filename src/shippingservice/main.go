@@ -13,7 +13,7 @@
 // limitations under the License.
 
 package main
-
+//mport appd "appdynamics"
 import (
 	"fmt"
 	"net"
@@ -72,6 +72,18 @@ func main() {
 //		log.Info("Profiling disabled.")
 //	}
 
+//	cfg := appd.Config{}
+//	cfg.AppName = "gcp-demo"
+//	cfg.TierName = "shippingservice"
+//	cfg.NodeName = "shippingservice-1"
+//	cfg.Controller.Host = "192.168.2.100"
+//	cfg.Controller.Port = 8090
+//	cfg.Controller.UseSSL =  false
+//	cfg.Controller.Account = "customer1"
+//	cfg.Controller.AccessKey = "dcdcbda3-ac89-4115-bf4d-25f4f3ecf4b2"
+//	cfg.InitTimeoutMs = 5000
+//	appd.InitSDK(&cfg)
+
 	port := defaultPort
 	if value, ok := os.LookupEnv("PORT"); ok {
 		port = value
@@ -119,7 +131,9 @@ func (s *server) Watch(req *healthpb.HealthCheckRequest, ws healthpb.Health_Watc
 
 // GetQuote produces a shipping quote (cost) in USD.
 func (s *server) GetQuote(ctx context.Context, in *pb.GetQuoteRequest) (*pb.GetQuoteResponse, error) {
+//	btHandle := appd.StartBT("ShippingService.GetQuote", NULL)
 	log.Info("[GetQuote] received request")
+//	defer appd.EndBT(btHandle)
 	defer log.Info("[GetQuote] completed request")
 
 	// 1. Our quote system requires the total number of items to be shipped.
@@ -144,8 +158,11 @@ func (s *server) GetQuote(ctx context.Context, in *pb.GetQuoteRequest) (*pb.GetQ
 // ShipOrder mocks that the requested items will be shipped.
 // It supplies a tracking ID for notional lookup of shipment delivery status.
 func (s *server) ShipOrder(ctx context.Context, in *pb.ShipOrderRequest) (*pb.ShipOrderResponse, error) {
+//	btHandle := appd.StartBT("ShippingService.ShipOrder")
 	log.Info("[ShipOrder] received request")
+//	defer appd.EndBT(btHandle, NULL)
 	defer log.Info("[ShipOrder] completed request")
+
 	// 1. Create a Tracking ID
 	baseAddress := fmt.Sprintf("%s, %s, %s", in.Address.StreetAddress, in.Address.City, in.Address.State)
 	id := CreateTrackingId(baseAddress)
@@ -162,7 +179,7 @@ func (s *server) ShipOrder(ctx context.Context, in *pb.ShipOrderRequest) (*pb.Sh
 // 		log.Info("jaeger initialization disabled.")
 // 		return
 // 	}
-// 
+//
 // 	// Register the Jaeger exporter to be able to retrieve
 // 	// the collected spans.
 // 	exporter, err := jaeger.NewExporter(jaeger.Options{
@@ -199,7 +216,7 @@ func (s *server) ShipOrder(ctx context.Context, in *pb.ShipOrderRequest) (*pb.Sh
 // 			trace.RegisterExporter(exporter)
 // 			trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
 // 			log.Info("registered Stackdriver tracing")
-// 
+//
 // 			// Register the views to collect server stats.
 // 			initStats(exporter)
 // 			return
