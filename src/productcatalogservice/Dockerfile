@@ -18,15 +18,15 @@ RUN dep ensure --vendor-only -v
 
 COPY . .
 RUN tar -xvf ./appd/golang-sdk-x64-linux.tar  -C $GOPATH/src
-RUN go build -gcflags='-N -l' -o /checkoutservice .
+RUN mkdir /productcatalogservice
+RUN go build -o /productcatalogservice/server .
 
 # FROM alpine AS release
 # RUN apk add --no-cache ca-certificates
 RUN GRPC_HEALTH_PROBE_VERSION=v0.2.0 && \
     wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
     chmod +x /bin/grpc_health_probe
-WORKDIR /productcatalogservice
-# COPY --from=builder /productcatalogservice ./server
-COPY products.json .
+
+COPY products.json /productcatalogservice/products.json
 EXPOSE 3550
 ENTRYPOINT ["/productcatalogservice/server"]
