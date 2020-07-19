@@ -13,7 +13,7 @@
 // limitations under the License.
 
 package main
-//import appd "appdynamics"
+import appd "appdynamics"
 import (
 	"bytes"
 	"context"
@@ -89,17 +89,17 @@ func main() {
 //		log.Info("Profiling disabled.")
 //	}
 
-//	cfg := appd.Config{}
-//	cfg.AppName = "gcp-demo"
-//	cfg.TierName = "productcatalogueservice"
-//	cfg.NodeName = "productcatalogueservice-1"
-//	cfg.Controller.Host = "192.168.2.100"
-//	cfg.Controller.Port = 8090
-//	cfg.Controller.UseSSL =  false
-//	cfg.Controller.Account = "customer1"
-//	cfg.Controller.AccessKey = "dcdcbda3-ac89-4115-bf4d-25f4f3ecf4b2"
-//	cfg.InitTimeoutMs = 5000
-//	appd.InitSDK(&cfg)
+	cfg := appd.Config{}
+	cfg.AppName = "gcp-demo"
+	cfg.TierName = "productcatalogueservice"
+	cfg.NodeName = "productcatalogueservice-1"
+	cfg.Controller.Host = "192.168.2.100"
+	cfg.Controller.Port = 8090
+	cfg.Controller.UseSSL =  false
+	cfg.Controller.Account = "customer1"
+	cfg.Controller.AccessKey = "dcdcbda3-ac89-4115-bf4d-25f4f3ecf4b2"
+	cfg.InitTimeoutMs = 5000
+	appd.InitSDK(&cfg)
 
 	flag.Parse()
 
