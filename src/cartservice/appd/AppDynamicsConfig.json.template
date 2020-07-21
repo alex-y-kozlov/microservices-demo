@@ -1,0 +1,21 @@
+{
+  "controller": {
+    "host": "controller.saas.appdynamics.com",
+    "port": 443,
+    "ssl": true,
+    "account": "account-name",
+    "password": "access-key"
+  },
+  "application": {
+    "name": "My Application",
+    "tier": "Sample tier",
+    "node": "Instance1"
+  },
+  "analytics" : {
+    "host": "controller.saas.appdynamics.com",
+    "port": 9090
+  },
+  "feature": [
+    "FULL_AGENT"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "controller": {
+    "host": "192.168.2.100",
+    "port": 8090,
+    "ssl": false,
+    "account": "customer1",
+    "password": "dcdcbda3-ac89-4115-bf4d-25f4f3ecf4b2"
+  },
+  "application": {
+    "name": "My Application",
+    "tier": "Sample tier",
+    "node": "Instance1"
+  },
+  "analytics" : {
+    "host": "192.168.2.100",
+    "port": 9090
+  },
+  "feature": [
+    "FULL_AGENT"
+  ]
+}
