@@ -230,6 +230,11 @@ func (cs *checkoutService) Watch(req *healthpb.HealthCheckRequest, ws healthpb.H
 }
 
 func (cs *checkoutService) PlaceOrder(ctx context.Context, req *pb.PlaceOrderRequest) (*pb.PlaceOrderResponse, error) {
+	btHandle := appd.StartBT("CheckoutService.PlaceOrder", "")
+	log.Info("[PlaceOrder] received request")
+	defer appd.EndBT(btHandle)
+	defer log.Info("[PlaceOrder] completed request")
+
 	log.Infof("[PlaceOrder] user_id=%q user_currency=%q", req.UserId, req.UserCurrency)
 
 	orderID, err := uuid.NewUUID()
@@ -403,6 +408,7 @@ func (cs *checkoutService) convertCurrency(ctx context.Context, from *pb.Money, 
 }
 
 func (cs *checkoutService) chargeCard(ctx context.Context, amount *pb.Money, paymentInfo *pb.CreditCardInfo) (string, error) {
+
 	conn, err := grpc.DialContext(ctx, cs.paymentSvcAddr, grpc.WithInsecure())
 //, grpc.WithStatsHandler(&ocgrpc.ClientHandler{}))
 	if err != nil {
@@ -420,6 +426,7 @@ func (cs *checkoutService) chargeCard(ctx context.Context, amount *pb.Money, pay
 }
 
 func (cs *checkoutService) sendOrderConfirmation(ctx context.Context, email string, order *pb.OrderResult) error {
+
 	conn, err := grpc.DialContext(ctx, cs.emailSvcAddr, grpc.WithInsecure())
 //, grpc.WithStatsHandler(&ocgrpc.ClientHandler{}))
 	if err != nil {
@@ -433,6 +440,7 @@ func (cs *checkoutService) sendOrderConfirmation(ctx context.Context, email stri
 }
 
 func (cs *checkoutService) shipOrder(ctx context.Context, address *pb.Address, items []*pb.CartItem) (string, error) {
+
 	conn, err := grpc.DialContext(ctx, cs.shippingSvcAddr, grpc.WithInsecure())
 	//, grpc.WithStatsHandler(&ocgrpc.ClientHandler{}))
 	if err != nil {

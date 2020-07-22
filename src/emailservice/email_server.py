@@ -41,6 +41,8 @@ from grpc_health.v1 import health_pb2_grpc
 from logger import getJSONLogger
 logger = getJSONLogger('emailservice-server')
 
+from appdynamics.agent import api as appd
+
 # try:
 #     googleclouddebugger.enable(
 #         module='emailserver',
@@ -89,28 +91,29 @@ class EmailService(BaseEmailService):
   def SendOrderConfirmation(self, request, context):
     email = request.email
     order = request.order
+    with bt('EmailService.SendOrderConfirmation'):
+        try:
+          confirmation = template.render(order = order)
+        except TemplateError as err:
+          context.set_details("An error occurred when preparing the confirmation mail.")
+          logger.error(err.message)
+          context.set_code(grpc.StatusCode.INTERNAL)
+          return demo_pb2.Empty()
 
-    try:
-      confirmation = template.render(order = order)
-    except TemplateError as err:
-      context.set_details("An error occurred when preparing the confirmation mail.")
-      logger.error(err.message)
-      context.set_code(grpc.StatusCode.INTERNAL)
-      return demo_pb2.Empty()
+        try:
+          EmailService.send_email(self.client, email, confirmation)
+        except GoogleAPICallError as err:
+          context.set_details("An error occurred when sending the email.")
+          print(err.message)
+          context.set_code(grpc.StatusCode.INTERNAL)
+          return demo_pb2.Empty()
 
-    try:
-      EmailService.send_email(self.client, email, confirmation)
-    except GoogleAPICallError as err:
-      context.set_details("An error occurred when sending the email.")
-      print(err.message)
-      context.set_code(grpc.StatusCode.INTERNAL)
-      return demo_pb2.Empty()
-
-    return demo_pb2.Empty()
+        return demo_pb2.Empty()
 
 class DummyEmailService(BaseEmailService):
   def SendOrderConfirmation(self, request, context):
-    logger.info('A request to send order confirmation email to {} has been received.'.format(request.email))
+    with bt('EmailService.SendOrderConfirmation'):
+        logger.info('A request to send order confirmation email to {} has been received.'.format(request.email))
     return demo_pb2.Empty()
 
 class HealthCheck():

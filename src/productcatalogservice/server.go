@@ -280,11 +280,21 @@ func (p *productCatalog) Watch(req *healthpb.HealthCheckRequest, ws healthpb.Hea
 }
 
 func (p *productCatalog) ListProducts(context.Context, *pb.Empty) (*pb.ListProductsResponse, error) {
+	btHandle := appd.StartBT("ProductCatalogService.ListProducts", "")
+	log.Info("[ListProducts] received request")
+	defer appd.EndBT(btHandle)
+	defer log.Info("[ListProducts] completed request")
+
 	time.Sleep(extraLatency)
 	return &pb.ListProductsResponse{Products: parseCatalog()}, nil
 }
 
 func (p *productCatalog) GetProduct(ctx context.Context, req *pb.GetProductRequest) (*pb.Product, error) {
+	btHandle := appd.StartBT("ProductCatalogService.GetProduct", "")
+	log.Info("[GetProduct] received request")
+	defer appd.EndBT(btHandle)
+	defer log.Info("[GetProduct] completed request")
+
 	time.Sleep(extraLatency)
 	var found *pb.Product
 	for i := 0; i < len(parseCatalog()); i++ {
@@ -299,6 +309,11 @@ func (p *productCatalog) GetProduct(ctx context.Context, req *pb.GetProductReque
 }
 
 func (p *productCatalog) SearchProducts(ctx context.Context, req *pb.SearchProductsRequest) (*pb.SearchProductsResponse, error) {
+	btHandle := appd.StartBT("ProductCatalogService.SearchProducts", "")
+	log.Info("[SearchProducts] received request")
+	defer appd.EndBT(btHandle)
+	defer log.Info("[SearchProducts] completed request")
+
 	time.Sleep(extraLatency)
 	// Intepret query as a substring match in name or description.
 	var ps []*pb.Product
