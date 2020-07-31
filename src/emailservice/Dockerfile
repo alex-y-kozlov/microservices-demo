@@ -15,7 +15,7 @@ FROM base as final
 # Enable unbuffered logging
 ENV PYTHONUNBUFFERED=1
 # Enable Profiler
-ENV ENABLE_PROFILER=1
+#ENV ENABLE_PROFILER=1
 
 RUN apt-get -qq update \
     && apt-get install -y --no-install-recommends \
@@ -29,10 +29,13 @@ RUN GRPC_HEALTH_PROBE_VERSION=v0.2.0 && \
 WORKDIR /email_server
 
 # Grab packages from builder
+COPY --from=builder /usr/local/bin/ /usr/local/bin/
 COPY --from=builder /usr/local/lib/python3.7/ /usr/local/lib/python3.7/
 
 # Add the application
 COPY . .
+RUN chmod +x /email_server/email_server.py
 
 EXPOSE 8080
-ENTRYPOINT [ "python", "email_server.py" ]
+#ENTRYPOINT [ "python", "email_server.py" ]
+ENTRYPOINT ["pyagent","run","-c","/email_server/pyagent.cfg","/email_server/email_server.py" ]
